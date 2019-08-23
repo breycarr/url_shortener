@@ -2,12 +2,12 @@
 > An API for a URL shortener 
 
 ## Specifications
-- [] Accepts a URL to be shortened.
-- [] Generates a short URL for the original URL.
-- [] Accepts a short URL and redirects the caller to the original URL.
+[X] Accepts a URL to be shortened.
+[X] Generates a short URL for the original URL.
+[] Accepts a short URL and redirects the caller to the original URL.
 
 #### Bonus points
-- [] Comes with a CLI that can be used to call your service.
+[] Comes with a CLI that can be used to call your service.
 
 ## Installation
 
@@ -41,6 +41,5 @@ Input | Output
 shortURL | Error message ("Unable to find URL)
 
 ### Edge Cases
-
 * The same URL is given twice
 
