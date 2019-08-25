@@ -9,6 +9,9 @@ import (
 // Database is a hash table of random letter keys and long URL values
 type Database map[string]string
 
+//  Length of key represents the length of the short URL
+var lengthOfKey = 6
+
 // ShortURLPrefix represents the domain of the URL shortener
 var ShortURLPrefix = "www.short-url.com/"
 
@@ -32,7 +35,7 @@ func (d Database) Decode(url string) (string, error) {
 // Encode creates a short URL and links it to the original long URL
 func (d Database) Encode(url string) (string, error) {
 	err := ValidateURL(url)
-	key := RandStringBytes(6)
+	key := GetUniqueKey(d)
 	d[key] = url
 	shortURL := ShortURLPrefix + key
 	return shortURL, err
@@ -44,6 +47,17 @@ func ValidateURL(url string) error {
 		return ErrNotValidURL
 	}
 	return nil
+}
+
+// GetUniqueKey generates a random string and check it is not present in the database
+func GetUniqueKey(d Database) string {
+	for {
+		key := RandStringBytes(lengthOfKey)
+		_, used := d[key]
+		if used == false {
+			return key
+		}
+	}
 }
 
 const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
