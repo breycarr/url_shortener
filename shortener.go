@@ -6,10 +6,10 @@ import (
 	"strings"
 )
 
-// Database is a hash table of random letter keys and long URL values
+// Database is a hash table of letter keys and long URL values
 type Database map[string]string
 
-//  Length of key represents the length of the short URL
+//  LengthOfKey represents the length of the short URL key
 var lengthOfKey = 6
 
 // ShortURLPrefix represents the domain of the URL shortener
@@ -49,7 +49,7 @@ func ValidateURL(url string) error {
 	return nil
 }
 
-// GetUniqueKey generates a random string and check it is not present in the database
+// GetUniqueKey generates a random string and checks it is not present in the database
 func GetUniqueKey(d Database) string {
 	for {
 		key := RandStringBytes(lengthOfKey)
