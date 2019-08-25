@@ -6,15 +6,26 @@ import (
 	"strings"
 )
 
+// Database is a hash table of random letter keys and long URL values
+type Database map[string]string
+
 // ShortURLPrefix represents the domain of the URL shortener
 var ShortURLPrefix = "www.short-url.com/"
 
-// Database is a hash table of random letter keys and long URL values
-type Database map[string]string
+// ErrNotFound is the error message for a URL not in the database
+var ErrNotFound = errors.New("Short URL does not exist")
+
+// ErrNotValidURL is the error message for a URL which does not meet the criteria
+var ErrNotValidURL = errors.New("Not a valid URL")
 
 // Decode retrieves the original URL by cross referenceing the random letter key
 func (d Database) Decode(url string) (string, error) {
 	key := strings.TrimPrefix(url, ShortURLPrefix)
+	url, ok := d[key]
+
+	if !ok {
+		return "", ErrNotFound
+	}
 	return d[key], nil
 }
 
@@ -30,7 +41,7 @@ func (d Database) Encode(url string) (string, error) {
 // ValidateURL checks if the URL is valid
 func ValidateURL(url string) error {
 	if !strings.Contains(url, ".com") {
-		return errors.New("Not a valid URL")
+		return ErrNotValidURL
 	}
 	return nil
 }

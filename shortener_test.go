@@ -11,13 +11,20 @@ var key = "abcdef"
 var shortURLregexp = `www.short-url.com\/[A-Za-z]{6}`
 
 func TestDecode(t *testing.T) {
-	t.Run("existing URL", func(t *testing.T) {
+	t.Run("existing short URL", func(t *testing.T) {
 		database := Database{key: longURL}
 		got, err := database.Decode(shortURL)
 		want := longURL
 
-		AssertStrings(t, got, want)
 		AssertNoError(t, err)
+		AssertStrings(t, got, want)
+	})
+
+	t.Run("non-existant short URL", func(t *testing.T) {
+		database := Database{}
+		_, err := database.Decode(shortURL)
+
+		AssertError(t, err)
 	})
 }
 
@@ -28,17 +35,18 @@ func TestEncode(t *testing.T) {
 		got, err := database.Encode(longURL)
 		want, _ := regexp.MatchString(shortURLregexp, got)
 
+		AssertNoError(t, err)
 		if !want {
 			t.Errorf("got %q", got)
 		}
-		AssertNoError(t, err)
 	})
 
 	t.Run("stores URL", func(t *testing.T) {
-		output, _ := database.Encode(longURL)
+		output, err := database.Encode(longURL)
 		got, _ := database.Decode(output)
 		want := longURL
 
+		AssertNoError(t, err)
 		AssertStrings(t, got, want)
 	})
 
