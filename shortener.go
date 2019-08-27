@@ -130,6 +130,8 @@ func main() {
 		case "3":
 			fmt.Println("Goodbye")
 			return
+		default:
+			fmt.Println("\n I didn't recognise that option")
 		}
 	}
 }
