@@ -43,6 +43,14 @@ Input | Output
 testshortenthislongurlplease | Error Message ("Not a valid URL")
 "" | Error Message ("Not a valid URL")
 
-### Edge Cases
-* The same URL is given twice
+## Current limitations and possible solutions 
+* The same long URL will receive different short URLs if given twice
+    * With the use of key-value map, it is not possible to search through all the existant values to verify if it has already been added
+* The database does not persist between sessions
+    * the database map is created whenever shortener.go is run, so saved URLs do not persist between sessions
 
+A possible solution to both of the above would be to implement database/SQL package, along with a method for checking the long URL against the database and retrieving and returning the matching short URL, this would function similarly to the loop used in GetUniqueKey.
+
+* The returned URL does not open the window as a webpage
+
+This could be implemented through use of the net/http package
