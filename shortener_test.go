@@ -36,9 +36,7 @@ func TestEncode(t *testing.T) {
 		want, _ := regexp.MatchString(shortURLregexp, got)
 
 		AssertNoError(t, err)
-		if !want {
-			t.Errorf("got %q", got)
-		}
+		AssertOutput(t, got, want)
 	})
 
 	t.Run("stores URL", func(t *testing.T) {
@@ -48,6 +46,14 @@ func TestEncode(t *testing.T) {
 
 		AssertNoError(t, err)
 		AssertStrings(t, got, want)
+	})
+
+	t.Run("accepts different Top Level Domains", func(t *testing.T) {
+		got, err := database.Encode("www.tech-test.org")
+		want, _ := regexp.MatchString(shortURLregexp, got)
+
+		AssertNoError(t, err)
+		AssertOutput(t, got, want)
 	})
 
 	t.Run("not a valid URL", func(t *testing.T) {
@@ -65,6 +71,12 @@ func AssertStrings(t *testing.T, got, want string) {
 	}
 }
 
+func AssertOutput(t *testing.T, got string, want bool) {
+	if !want {
+		t.Errorf("got %q, does not match regular expression rule", got)
+	}
+}
+
 func AssertError(t *testing.T, err error) {
 	t.Helper()
 	if err == nil {
@@ -75,6 +87,6 @@ func AssertError(t *testing.T, err error) {
 func AssertNoError(t *testing.T, err error) {
 	t.Helper()
 	if err != nil {
-		t.Fatal("Unexpected error encountered")
+		t.Fatal("Unexpected error encountered: " + err.Error())
 	}
 }

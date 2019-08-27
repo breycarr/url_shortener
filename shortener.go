@@ -15,6 +15,10 @@ var lengthOfKey = 6
 // ShortURLPrefix represents the domain of the URL shortener
 var ShortURLPrefix = "www.short-url.com/"
 
+// TopLevelDomains is a library of TLDs which are used to validate a URL
+// The use of 2 TLDs is illustrative, more would be needed in a full implementation
+var TopLevelDomains = []string{".com", ".org"}
+
 // ErrNotFound is the error message for a URL not in the database
 var ErrNotFound = errors.New("Short URL does not exist")
 
@@ -43,10 +47,12 @@ func (d Database) Encode(url string) (string, error) {
 
 // ValidateURL checks if the URL is valid
 func ValidateURL(url string) error {
-	if !strings.Contains(url, ".com") {
-		return ErrNotValidURL
+	for _, tld := range TopLevelDomains {
+		if strings.Contains(url, tld) {
+			return nil
+		}
 	}
-	return nil
+	return ErrNotValidURL
 }
 
 // GetUniqueKey generates a random string and checks it is not present in the database
@@ -72,4 +78,32 @@ func RandStringBytes(n int) string {
 	return string(b)
 }
 
-func main() {}
+func main() {
+	// for {
+	// 	var input string
+	// 	database := Database{}
+
+	// 	fmt.Println("Please type a number then enter")
+	// 	fmt.Println("1: Shorten URL")
+	// 	fmt.Println("2: Get original URL")
+	// 	fmt.Println("3: Exit program")
+	// 	i, err := fmt.Scanln(&input)
+
+	// 	if err != nil {
+	// 		fmt.Fprintln(os.Stderr, err)
+	// 		return
+	// 	}
+
+	// 	switch i {
+	// 	case 1:
+	// 		fmt.Println("Please enter the URL to shorten")
+	// 		input, _ := fmt.Scanln(&input)
+	// 		database.Encode(input)
+	// 	case 2:
+	// 		fmt.Println("Please enter your shortened URL")
+	// 		e, _ := fmt.Scanln(&input)
+	// 	case 3:
+	// 		break
+	// 	}
+	// }
+}
