@@ -42,6 +42,9 @@ func (d Database) Decode(url string) (string, error) {
 // Encode creates a short URL and links it to the original long URL
 func (d Database) Encode(url string) (string, error) {
 	err := ValidateURL(url)
+	if err != nil {
+		return "", err
+	}
 	key := GetUniqueKey(d)
 	d[key] = url
 	shortURL := ShortURLPrefix + key
@@ -50,12 +53,17 @@ func (d Database) Encode(url string) (string, error) {
 
 // ValidateURL checks if the URL is valid
 func ValidateURL(url string) error {
+	validURL := false
 	for _, tld := range TopLevelDomains {
 		if strings.Contains(url, tld) {
-			return nil
+			validURL = true
+			break
 		}
 	}
-	return ErrNotValidURL
+	if !validURL {
+		return ErrNotValidURL
+	}
+	return nil
 }
 
 // GetUniqueKey generates a random string and checks it is not present in the database
@@ -94,18 +102,32 @@ func main() {
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
 		}
+		cmdString = strings.TrimSuffix(cmdString, "\n")
 
 		switch cmdString {
 		case "1":
-			fmt.Println("Please enter the URL to shorten and type enter")
+			fmt.Println("\n Please enter the URL to shorten and type enter")
 			longURL, _ := input.ReadString('\n')
-			database.Encode(longURL)
+			longURL = strings.TrimSuffix(longURL, "\n")
+			output, err := database.Encode(longURL)
+			if err != nil {
+				fmt.Println(err)
+			} else {
+				fmt.Println("\n Your shortened URL is: " + output + "\n")
+			}
 		case "2":
-			fmt.Println("Please enter your shortened URL and type enter")
+			fmt.Println("\n Please enter your shortened URL and type enter")
 			shortURL, _ := input.ReadString('\n')
-			database.Decode(shortURL)
+			shortURL = strings.TrimSuffix(shortURL, "\n")
+			output, err := database.Decode(shortURL)
+			if err != nil {
+				fmt.Println(err)
+			} else {
+				fmt.Println("\n Your original URL was: " + output + "\n")
+			}
 		case "3":
-			break
+			fmt.Println("Goodbye")
+			return
 		}
 	}
 }
