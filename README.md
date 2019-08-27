@@ -4,7 +4,7 @@
 ## Specifications
 - [x] Accepts a URL to be shortened.  
 - [x] Generates a short URL for the original URL.  
-- [] Accepts a short URL and redirects the caller to the original URL.
+- [x] Accepts a short URL and redirects the caller to the original URL.
 
 #### Bonus points
 - [] Comes with a CLI that can be used to call your service.
@@ -17,7 +17,6 @@ The Decode function accepts a Shortened URL as an argument:
 - [x] It validates that URL is currently present in the hash
     * If not it returns an error message 
 - [x] If the URL is valid, it returns the original URL
-- [] It redirects the caller to the original URL
 
 Input | Output
 -|-
@@ -27,7 +26,7 @@ shortURL | Error message ("Short URL does not exist")
 ### Encode function
 The Encode function accepts a URL string as an argument and performs several sub functions, which will be extracted in line with Single Responsibility
 - [x] It accepts a URL as an argument 
-- [] It verifies that it is a valid URL
+- [x] It verifies that it is a valid URL
     * Defined as including either .com or .org as the most commonly used TLDs, but with scope for increasing this library
 - [x] It randomly generates a shortened URL
 - [x] It needs to verify that the shortened URL does not exist
