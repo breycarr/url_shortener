@@ -28,6 +28,10 @@ var ErrNotFound = errors.New("Short URL does not exist")
 // ErrNotValidURL is the error message for a URL which does not meet the criteria
 var ErrNotValidURL = errors.New("Not a valid URL")
 
+//  letterBytes is used with the RandStringBytes function
+// Source: https://stackoverflow.com/questions/22892120/how-to-generate-a-random-string-of-a-fixed-length-in-go
+const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
 // Decode retrieves the original URL by cross referenceing the random letter key
 func (d Database) Decode(url string) (string, error) {
 	key := strings.TrimPrefix(url, ShortURLPrefix)
@@ -76,8 +80,6 @@ func GetUniqueKey(d Database) string {
 		}
 	}
 }
-
-const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 // RandStringBytes creates a random string of 6 letters
 // Source: https://stackoverflow.com/questions/22892120/how-to-generate-a-random-string-of-a-fixed-length-in-go
