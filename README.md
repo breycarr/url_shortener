@@ -12,7 +12,18 @@
 ## Installation
 Clone this repository to your personal device.  
 Navigate to the containing folder in the command line and run:  
-```go run shortener.go```
+```
+go run shortener.go
+```
+You will see:
+```
+Please type a number then enter
+1: Shorten URL
+2: Get original URL
+3: Exit program
+```
+
+Please follow the CLI instructions
 
 ## Usage
 ### Decode function
