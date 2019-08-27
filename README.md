@@ -10,9 +10,9 @@
 - [x] Comes with a CLI that can be used to call your service.
 
 ## Installation
-Clone this repository to your personal device. 
-Navigate to the containing folder in the command line and run
-`go run shortener.go`
+Clone this repository to your personal device.  
+Navigate to the containing folder in the command line and run:  
+```go run shortener.go```
 
 ## Usage
 ### Decode function
