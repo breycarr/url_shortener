@@ -1,8 +1,11 @@
 package main
 
 import (
+	"bufio"
 	"errors"
+	"fmt"
 	"math/rand"
+	"os"
 	"strings"
 )
 
@@ -79,31 +82,30 @@ func RandStringBytes(n int) string {
 }
 
 func main() {
-	// for {
-	// 	var input string
-	// 	database := Database{}
+	input := bufio.NewReader(os.Stdin)
+	database := Database{}
+	for {
+		fmt.Println("Please type a number then enter")
+		fmt.Println("1: Shorten URL")
+		fmt.Println("2: Get original URL")
+		fmt.Println("3: Exit program")
+		cmdString, err := input.ReadString('\n')
 
-	// 	fmt.Println("Please type a number then enter")
-	// 	fmt.Println("1: Shorten URL")
-	// 	fmt.Println("2: Get original URL")
-	// 	fmt.Println("3: Exit program")
-	// 	i, err := fmt.Scanln(&input)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+		}
 
-	// 	if err != nil {
-	// 		fmt.Fprintln(os.Stderr, err)
-	// 		return
-	// 	}
-
-	// 	switch i {
-	// 	case 1:
-	// 		fmt.Println("Please enter the URL to shorten")
-	// 		input, _ := fmt.Scanln(&input)
-	// 		database.Encode(input)
-	// 	case 2:
-	// 		fmt.Println("Please enter your shortened URL")
-	// 		e, _ := fmt.Scanln(&input)
-	// 	case 3:
-	// 		break
-	// 	}
-	// }
+		switch cmdString {
+		case "1":
+			fmt.Println("Please enter the URL to shorten and type enter")
+			longURL, _ := input.ReadString('\n')
+			database.Encode(longURL)
+		case "2":
+			fmt.Println("Please enter your shortened URL and type enter")
+			shortURL, _ := input.ReadString('\n')
+			database.Decode(shortURL)
+		case "3":
+			break
+		}
+	}
 }
